@@ -1,12 +1,10 @@
 <template>
-  <div class="about">
-<div class="center-on-page">
-  
-  <div class="pokeball">
-    <div class="pokeball__button"></div>
-  </div>
-  
-</div>
+  <div class="loading">
+    <div class="center-on-page">
+      <div class="pokeball">
+        <div class="pokeball__button"></div>
+      </div>
+    </div>
   </div>
 </template>
 

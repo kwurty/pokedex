@@ -1,32 +1,40 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <app-nav></app-nav>
+    <transition name="fade">  
+      <app-loading v-if="isLoading"></app-loading>
+    </transition>
+    <transition name="fade">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
+</style>
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+import appNav from './components/Nav.vue'
+import appLoading from './components/Loading.vue'
+import {mapGetters} from 'vuex'
+export default {
+  computed:{
+    ...mapGetters(['isLoading'])
+  },
+  components: {
+    appNav,
+    appLoading
   }
+  
+}
+</script>
+
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
