@@ -4,13 +4,15 @@
       <div class="pokeball">
         <div class="pokeball__button"></div>
       </div>
+      <div class="loading-title">Loading...</div>
     </div>
   </div>
 </template>
 
 <style scoped>
-
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -22,7 +24,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 /* Poké Styles */
 .pokeball {
@@ -34,12 +36,12 @@ body {
   border-radius: 50%;
   overflow: hidden;
   box-shadow: inset -10px 10px 0 10px #ccc;
-  animation: fall .25s ease-in-out,
-             shake 1.25s cubic-bezier(.36,.07,.19,.97) 3;
+  animation: fall 0.25s ease-in-out,
+    shake 1.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) 3;
 }
 .pokeball::before,
 .pokeball::after {
-  content:"";
+  content: "";
   position: absolute;
 }
 .pokeball::before {
@@ -64,25 +66,56 @@ body {
   border-radius: 50%;
   z-index: 10;
   box-shadow: 0 0 0 10px black;
-  animation: blink .5s alternate 7;
+  animation: blink 0.5s alternate 7;
 }
 /* Animation */
 @keyframes blink {
-  from { background: #eee;}
-  to { background: #e74c3c; }
+  from {
+    background: #eee;
+  }
+  to {
+    background: #e74c3c;
+  }
 }
 @keyframes shake {
-  0% { transform: translate(0, 0) rotate(0); }
-  20% { transform: translate(-10px, 0) rotate(-20deg); }
-  30% { transform: translate(10px, 0) rotate(20deg); }
-  50% { transform: translate(-10px, 0) rotate(-10deg); }
-  60% { transform: translate(10px, 0) rotate(10deg); }
-  100% { transform: translate(0, 0) rotate(0); }
+  0% {
+    transform: translate(0, 0) rotate(0);
+  }
+  20% {
+    transform: translate(-10px, 0) rotate(-20deg);
+  }
+  30% {
+    transform: translate(10px, 0) rotate(20deg);
+  }
+  50% {
+    transform: translate(-10px, 0) rotate(-10deg);
+  }
+  60% {
+    transform: translate(10px, 0) rotate(10deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
 }
 @keyframes fall {
-  0% { top: -200px }
-  60% { top: 0 }
-  80% { top: -20px }
-  100% { top: 0 }
+  0% {
+    top: -200px;
+  }
+  60% {
+    top: 0;
+  }
+  80% {
+    top: -20px;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+.loading-title {
+  text-align: center;
+  font-weight: 500;
+  font-size: 2em;
+  font-family: "Montserrat", sans-serif;
 }
 </style>

@@ -3,6 +3,7 @@
     <div class="card has-text-centered">
       <div class="container card-header has-text-centered">
         <div class="title is-uppercase">{{name}}</div>
+        {{id}}
       </div>
       <div class="card-content is-centered">
         <img :src="imageURL" />
@@ -18,7 +19,8 @@ export default {
   },
   props: {
     name: String,
-    url: String
+    url: String,
+    id: Number
   },
   components: {},
   computed: {

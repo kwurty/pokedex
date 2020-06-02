@@ -5,7 +5,7 @@ require('axios');
 export default {
 
     namespaced: true,
-    
+
     state: {
         pokemon: {
 
@@ -13,7 +13,7 @@ export default {
     },
 
     getters: {
-        getPokemon(state){
+        getPokemon(state) {
             return state.pokemon;
         }
     },
@@ -22,20 +22,27 @@ export default {
         setPokemon(state, payload) {
             state.pokemon = payload
         }
-    },  
+    },
 
     actions: {
-        getPokemon(context){
+        getPokemon(context) {
+            if (context.state.pokemon.length > 1) {
+                return
+            }
+            console.log('getting');
             context.commit('setLoading', true, { root: true })
             Axios.get('https://pokeapi.co/api/v2/pokemon?limit=807')
-            .then(response => {
-                context.commit('setPokemon', response.data.results)
-            })
-            .then(() => {
-                setTimeout(()=> {
-                    context.commit('setLoading', false, { root: true })
-                }, 1000)
-            })
+                .then(response => {
+                    response.data.results.forEach(pokemon => {
+                        pokemon.id = response.data.results.indexOf(pokemon) + 1
+                    })
+                    context.commit('setPokemon', response.data.results)
+                })
+                .then(() => {
+                    setTimeout(() => {
+                        context.commit('setLoading', false, { root: true })
+                    }, 200)
+                })
         }
     }
 
