@@ -1,6 +1,17 @@
 <template>
   <div id="app">
-    <app-nav></app-nav>
+  <section class="hero">
+  <div class="hero-body">
+    <div class=" has-text-centered">
+      <h1 class="title">
+        Pokevue
+      </h1>
+      <h2 class="subtitle">
+        A Pokemon Explorer
+      </h2>
+    </div>
+  </div>
+</section>
     <transition name="fade">
       <app-loading v-if="isLoading"></app-loading>
     </transition>
@@ -14,7 +25,6 @@
 </style>
 
 <script>
-import appNav from "./components/Nav.vue";
 import appLoading from "./components/Loading.vue";
 import { mapGetters } from "vuex";
 export default {
@@ -22,7 +32,6 @@ export default {
     ...mapGetters(["isLoading"])
   },
   components: {
-    appNav,
     appLoading
   }
 };

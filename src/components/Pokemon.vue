@@ -2,7 +2,7 @@
   <div class="container">
     <div class="card has-text-centered">
       <div class="container card-header has-text-centered">
-        <div class="title is-uppercase">{{name}}</div>
+        <div class="title2 is-uppercase">{{name}}</div>
         {{id}}
       </div>
       <div class="card-content is-centered">
@@ -53,6 +53,22 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 2fr));
   grid-gap: 0.5em;
+}
+
+.card-header {
+  background: red;
+  color: white;
+}
+
+.title2 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.125;
+}
+
+.card {
+  border: 1px solid rgba(0, 0, 0, .4);
 }
 </style>
 

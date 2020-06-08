@@ -1,10 +1,10 @@
 <template>
   <div class>
-    <nav class="level">
+    <nav class="navbar level is-fixed-top">
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Search Pokemon</p>
-          <input type="text" class="input is-large" v-model="pokemon" />
+          <input type="text" class="input is-small" v-model="pokemon" />
         </div>
       </div>
       <div class="level-item has-text-centered">
@@ -15,34 +15,21 @@
       </div>
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading">Filter</p>
-          <ul>
-            <label
-              :class="{'arrow-up': (filtered == 'abc' && ascending)}"
-              v-if="filtered == 'abc' && ascending"
-            ></label>
-            <label
-              :class="{'arrow-down': (filtered == 'abc' && !ascending)}"
-              v-if="filtered == 'abc' && !ascending"
-            ></label>
-            <li :class="{ active: filtered == 'abc' }" @click="toggleSort">abc</li>
+          <p class="heading">
+            Filter
+            <i class="arrow" :class="{'arrow-up': ascending, 'arrow-down': !ascending}"></i>
+          </p>
 
-            <label
-              :class="{'arrow-up': (filtered == 'id' && ascending)}"
-              v-if="filtered == 'id' && ascending"
-            ></label>
-            <label
-              :class="{'arrow-down': (filtered == 'id' && !ascending)}"
-              v-if="filtered == 'id' && !ascending"
-            ></label>
-            <li :class="{ active: filtered == 'id'}" @click="toggleSort">id</li>
+          <ul>
+            <li
+              :class="{ active: filtered == 'abc' }"
+              @click="sortPokemon({ ascending, filtered })"
+            >abc</li>
+            <li
+              :class="{ active: filtered == 'id'}"
+              @click="sortPokemon({ ascending, filtered })"
+            >id</li>
           </ul>
-        </div>
-      </div>
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">Likes</p>
-          <p class="title">789</p>
         </div>
       </div>
     </nav>
@@ -83,14 +70,14 @@ export default {
       for (let poke of gathered) {
         poke.name.includes(this.pokemon) ? filtered.push(poke) : undefined;
       }
-
       return filtered;
     }
   },
 
   methods: {
     ...mapActions({
-      getPokemon: "Pokemon/getPokemon"
+      getPokemon: "Pokemon/getPokemon",
+      sortPokemon: "Pokemon/sortPokemon"
     }),
     toggleSort(e) {
       if (this.filtered != e.target.textContent) {
@@ -107,6 +94,16 @@ export default {
 </script>
 
 <style scoped>
+
+nav {
+  background: rgba(255, 0, 0, 1);
+  color: white;
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 2fr));
+  grid-gap: 0.5em;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 2fr));
@@ -121,25 +118,27 @@ ul li {
 
 .active {
   font-weight: 800;
-  background-color: red;
-  color: white;
+  background-color: white;
+  color: red;
+}
+
+.arrow {
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
 }
 
 .arrow-up {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-
-  border-bottom: 10px solid red;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
 }
 
 .arrow-down {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-
-  border-top: 10px solid #f00;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+.title {
+  color: white;
 }
 </style>

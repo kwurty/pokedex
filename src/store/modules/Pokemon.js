@@ -21,6 +21,26 @@ export default {
     mutations: {
         setPokemon(state, payload) {
             state.pokemon = payload
+        },
+        sortPokemon(state, payload) {
+            console.log(state, payload);
+            if (this.filtered == 'id') {
+                if (this.ascending) {
+                    this.filteredPokemon.sort((a, b) => {
+                        a.id < b.id ? a : b
+                    })
+                } else {
+                    this.filteredPokemon.sort((a, b) => {
+                        a.id < b.id ? b : a
+                    })
+                }
+            } else {
+                if (this.ascending) {
+                    this.filteredPokemon.sort((a, b) => a.name.localeCompare(b.name))
+                } else {
+                    this.filteredPokemon.sort((a, b) => a.name.localeCompare(b.name)).reverse()
+                }
+            }
         }
     },
 
@@ -43,6 +63,10 @@ export default {
                         context.commit('setLoading', false, { root: true })
                     }, 200)
                 })
+        },
+
+        sortPokemon(context, payload) {
+            console.log(context,payload)
         }
     }
 
