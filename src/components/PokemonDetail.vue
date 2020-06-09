@@ -1,30 +1,34 @@
 <template>
-  <div class="container"></div>
+  <div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <!-- Any other Bulma elements you want -->
+      {{id}}
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
+
 export default {
+  computed: {
+    ...mapGetters({
+      getActivePokemon: "Pokemon/getActivePokemon"
+    })
+  },
   props: [
     {
-      id: Number,
-      name: String,
-      base_experience: Number,
-      height: Number,
-      is_default: Boolean,
-      order: Number,
-      weight: Number,
-      abilities: Array,
-      forms: Array,
-      game_indeces: Array,
-      held_items: Array,
-      location_area_encounters: String,
-      moves: Array,
-      sprites: Object,
-      species: Object,
-      stats: Array,
-      types: Array
+      id: String
     }
-  ]
+  ],
+  methods: {
+    ...mapActions({
+      getPokemonDetails: "Pokemon/getPokemonDetails"
+    })
+  }
 };
 </script>
 

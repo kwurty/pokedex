@@ -9,12 +9,22 @@ export default {
     state: {
         pokemon: {
 
+        },
+        activePokemon: {
+
+        },
+        sort: {
+            ascending: true,
+            filter: 'id'
         }
     },
 
     getters: {
         getPokemon(state) {
             return state.pokemon;
+        },
+        getActivePokemon(state) {
+            return state.activePokemon;
         }
     },
 
@@ -22,25 +32,35 @@ export default {
         setPokemon(state, payload) {
             state.pokemon = payload
         },
-        sortPokemon(state, payload) {
-            console.log(state, payload);
-            if (this.filtered == 'id') {
-                if (this.ascending) {
-                    this.filteredPokemon.sort((a, b) => {
-                        a.id < b.id ? a : b
-                    })
+        sortPokemon(state) {
+            if (state.sort.filter == "id") {
+                if (state.sort.ascending) {
+                    state.pokemon.sort((a, b) => {
+                        return a.id < b.id ? -1 : 1;
+                    });
                 } else {
-                    this.filteredPokemon.sort((a, b) => {
-                        a.id < b.id ? b : a
-                    })
+                    state.pokemon.sort((a, b) => {
+                        return a.id < b.id ? 1 : -1;
+                    });
                 }
             } else {
-                if (this.ascending) {
-                    this.filteredPokemon.sort((a, b) => a.name.localeCompare(b.name))
+                if (state.sort.ascending) {
+                    state.pokemon.sort((a, b) => {
+                        return a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1;
+                    });
                 } else {
-                    this.filteredPokemon.sort((a, b) => a.name.localeCompare(b.name)).reverse()
+                    state.pokemon.sort((a, b) => {
+                        return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
+                    });
                 }
             }
+        },
+        setSorting(state, payload) {
+            state.sort.ascending = payload.ascending;
+            state.sort.filter = payload.filter;
+        },
+        setActivePokemon(state, payload) {
+            state.activePokemon = payload
         }
     },
 
@@ -49,7 +69,6 @@ export default {
             if (context.state.pokemon.length > 1) {
                 return
             }
-            console.log('getting');
             context.commit('setLoading', true, { root: true })
             Axios.get('https://pokeapi.co/api/v2/pokemon?limit=807')
                 .then(response => {
@@ -59,14 +78,24 @@ export default {
                     context.commit('setPokemon', response.data.results)
                 })
                 .then(() => {
+                    context.commit('sortPokemon')
+                })
+                .then(() => {
                     setTimeout(() => {
                         context.commit('setLoading', false, { root: true })
                     }, 200)
                 })
         },
+        getPokemonDetails(context, payload) {
+            Axios.get('https://pokeapi.co/api/v2/pokemon/' + payload)
+                .then(response => {
+                    context.commit('setActivePokemon', response.data.results)
+                })
+        },
 
         sortPokemon(context, payload) {
-            console.log(context,payload)
+            context.commit('setSorting', payload);
+            context.commit('sortPokemon');
         }
     }
 

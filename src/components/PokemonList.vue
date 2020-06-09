@@ -10,7 +10,7 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Matching Pokemon</p>
-          <p class="title">{{filteredPokemon.length}}</p>
+          <p class="title">{{ searchedPokemon.length }}</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
@@ -21,21 +21,15 @@
           </p>
 
           <ul>
-            <li
-              :class="{ active: filtered == 'abc' }"
-              @click="sortPokemon({ ascending, filtered })"
-            >abc</li>
-            <li
-              :class="{ active: filtered == 'id'}"
-              @click="sortPokemon({ ascending, filtered })"
-            >id</li>
+            <li :class="{ active: filtered == 'abc' }" @click="toggleSort">abc</li>
+            <li :class="{ active: filtered == 'id'}" @click="toggleSort">id</li>
           </ul>
         </div>
       </div>
     </nav>
     <div class="container is-fluid grid" v-if="!isLoading">
       <appPokemon
-        v-for="(pokemon, index) in filteredPokemon"
+        v-for="(pokemon, index) in searchedPokemon"
         :key="index"
         :url="pokemon.url"
         :name="pokemon.name"
@@ -55,19 +49,21 @@ export default {
       morePages: true,
       pokemon: "",
       filtered: "id",
-      ascending: true
+      ascending: false
     };
   },
   components: {
     appPokemon: Pokemon
   },
   computed: {
-    ...mapGetters(["isLoading"]),
-    filteredPokemon() {
-      let gathered = this.$store.getters["Pokemon/getPokemon"];
+    ...mapGetters({
+      isLoading: "isLoading",
+      listedPokemon: "Pokemon/getPokemon"
+    }),
+    searchedPokemon() {
       let filtered = [];
-      if (this.pokemon.length < 1) return gathered;
-      for (let poke of gathered) {
+      if (this.pokemon.length < 1) return this.listedPokemon;
+      for (let poke of this.listedPokemon) {
         poke.name.includes(this.pokemon) ? filtered.push(poke) : undefined;
       }
       return filtered;
@@ -85,6 +81,7 @@ export default {
       } else {
         this.ascending = !this.ascending;
       }
+      this.sortPokemon({ filter: this.filtered, ascending: this.ascending });
     }
   },
   created() {
@@ -94,7 +91,6 @@ export default {
 </script>
 
 <style scoped>
-
 nav {
   background: rgba(255, 0, 0, 1);
   color: white;

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="card has-text-centered">
+    <div class="card has-text-centered" @click="getActivePokemon">
       <div class="container card-header has-text-centered">
         <div class="title2 is-uppercase">{{name}}</div>
         {{id}}
@@ -9,20 +9,31 @@
         <img :src="imageURL" />
       </div>
     </div>
+    <app-pokemon-detail :class="{'is-active': active}" v-if="active" :id="id"></app-pokemon-detail>
   </div>
 </template>
 
 <script>
+import PokemonDetail from "./PokemonDetail.vue";
 export default {
   data() {
-    return {};
+    return {
+      active: false
+    };
   },
   props: {
     name: String,
     url: String,
     id: Number
   },
-  components: {},
+  components: {
+    appPokemonDetail: PokemonDetail
+  },
+  methods: {
+    getActivePokemon() {
+      this.active = true;
+    }
+  },
   computed: {
     imageURL() {
       let pokeID = this.url.match(/\/pokemon\/(\d+)\//);
@@ -68,7 +79,7 @@ export default {
 }
 
 .card {
-  border: 1px solid rgba(0, 0, 0, .4);
+  border: 1px solid rgba(0, 0, 0, 0.4);
 }
 </style>
 
