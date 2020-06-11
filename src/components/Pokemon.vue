@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="card has-text-centered" @click="setPokemon()">
+    <div class="card has-text-centered" @click="getPokemonDetails(id)">
       <div class="container card-header has-text-centered">
         <div class="title2 is-uppercase">{{name}}</div>
         {{id}}
@@ -34,10 +34,7 @@ export default {
   methods: {
     ...mapActions({
     getPokemonDetails: 'Pokemon/getPokemonDetails'
-    }),
-    setPokemon(){
-
-    }
+    })
   },
   computed: {
         ...mapGetters({
