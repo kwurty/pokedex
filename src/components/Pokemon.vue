@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="card has-text-centered" @click="getActivePokemon">
+    <div class="card has-text-centered" @click="setPokemon()">
       <div class="container card-header has-text-centered">
         <div class="title2 is-uppercase">{{name}}</div>
         {{id}}
@@ -9,12 +9,14 @@
         <img :src="imageURL" />
       </div>
     </div>
-    <app-pokemon-detail :class="{'is-active': active}" v-if="active" :id="id"></app-pokemon-detail>
+    <app-pokemon-detail v-if="activePokemon.isActive"></app-pokemon-detail>
   </div>
 </template>
 
 <script>
 import PokemonDetail from "./PokemonDetail.vue";
+import { mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -27,14 +29,21 @@ export default {
     id: Number
   },
   components: {
-    appPokemonDetail: PokemonDetail
+    appPokemonDetail: PokemonDetail,
   },
   methods: {
-    getActivePokemon() {
-      this.active = true;
+    ...mapActions({
+    getPokemonDetails: 'Pokemon/getPokemonDetails'
+    }),
+    setPokemon(){
+
     }
   },
   computed: {
+        ...mapGetters({
+      activePokemon: ['Pokemon/getActivePokemon'],
+      isLoading: ['isLoading']
+    }),
     imageURL() {
       let pokeID = this.url.match(/\/pokemon\/(\d+)\//);
       return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeID[1]}.png`;
@@ -80,6 +89,7 @@ export default {
 
 .card {
   border: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
 </style>
 

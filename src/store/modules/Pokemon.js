@@ -11,7 +11,8 @@ export default {
 
         },
         activePokemon: {
-
+            isActive: false,
+            details: {}
         },
         sort: {
             ascending: true,
@@ -25,6 +26,9 @@ export default {
         },
         getActivePokemon(state) {
             return state.activePokemon;
+        },
+        getSort(state){
+            return state.sort
         }
     },
 
@@ -32,7 +36,10 @@ export default {
         setPokemon(state, payload) {
             state.pokemon = payload
         },
-        sortPokemon(state) {
+        setSorting(state, payload) {
+            state.sort.ascending = payload.ascending;
+            state.sort.filter = payload.filter;
+
             if (state.sort.filter == "id") {
                 if (state.sort.ascending) {
                     state.pokemon.sort((a, b) => {
@@ -55,12 +62,10 @@ export default {
                 }
             }
         },
-        setSorting(state, payload) {
-            state.sort.ascending = payload.ascending;
-            state.sort.filter = payload.filter;
-        },
         setActivePokemon(state, payload) {
-            state.activePokemon = payload
+            state.activePokemon = {}
+            state.activePokemon.details = payload.activePokemon
+            state.activePokemon.isActive = payload.isActive
         }
     },
 
@@ -78,7 +83,7 @@ export default {
                     context.commit('setPokemon', response.data.results)
                 })
                 .then(() => {
-                    context.commit('sortPokemon')
+                    context.commit('setSorting', {ascending: true, filter: 'id'})
                 })
                 .then(() => {
                     setTimeout(() => {
@@ -87,15 +92,27 @@ export default {
                 })
         },
         getPokemonDetails(context, payload) {
+            context.commit('setLoading', true, { root: true })
             Axios.get('https://pokeapi.co/api/v2/pokemon/' + payload)
                 .then(response => {
-                    context.commit('setActivePokemon', response.data.results)
+                    
+                    console.log(response)
+                    context.commit('setActivePokemon', {activePokemon: response.data, isActive: true})
+                })
+                .then(() => {
+                    setTimeout(() => {
+                        context.commit('setLoading', false, { root: true })
+                    }, 200)
                 })
         },
 
         sortPokemon(context, payload) {
             context.commit('setSorting', payload);
-            context.commit('sortPokemon');
+        },
+
+        setActive(context, payload) {
+            console.log(payload);
+            context.commit('setActivePokemon', payload);
         }
     }
 

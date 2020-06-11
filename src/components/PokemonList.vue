@@ -17,16 +17,19 @@
         <div>
           <p class="heading">
             Filter
-            <i class="arrow" :class="{'arrow-up': ascending, 'arrow-down': !ascending}"></i>
+            <i class="arrow" :class="{'arrow-up': sort.ascending, 'arrow-down': !sort.ascending}"></i>
           </p>
 
           <ul>
-            <li :class="{ active: filtered == 'abc' }" @click="toggleSort">abc</li>
-            <li :class="{ active: filtered == 'id'}" @click="toggleSort">id</li>
+            <li :class="{ active: sort.filter == 'abc' }" @click="toggleSort">abc</li>
+            <li :class="{ active: sort.filter == 'id'}" @click="toggleSort">id</li>
           </ul>
         </div>
       </div>
     </nav>
+    <transition name="fade" mode="out-in">
+      <app-loading v-if="isLoading && searchedPokemon.length > 1"></app-loading>
+    </transition><transition name="fade" mode="out-in">
     <div class="container is-fluid grid" v-if="!isLoading">
       <appPokemon
         v-for="(pokemon, index) in searchedPokemon"
@@ -36,29 +39,30 @@
         :id="pokemon.id"
       ></appPokemon>
     </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import Pokemon from "./Pokemon.vue";
+import Loading from './Loading.vue'
 import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      morePages: true,
-      pokemon: "",
-      filtered: "id",
-      ascending: false
+      pokemon: ""
     };
   },
   components: {
-    appPokemon: Pokemon
+    appPokemon: Pokemon,
+    appLoading: Loading
   },
   computed: {
     ...mapGetters({
       isLoading: "isLoading",
-      listedPokemon: "Pokemon/getPokemon"
+      listedPokemon: "Pokemon/getPokemon",
+      sort: "Pokemon/getSort"
     }),
     searchedPokemon() {
       let filtered = [];
@@ -76,12 +80,7 @@ export default {
       sortPokemon: "Pokemon/sortPokemon"
     }),
     toggleSort(e) {
-      if (this.filtered != e.target.textContent) {
-        this.filtered = e.target.textContent;
-      } else {
-        this.ascending = !this.ascending;
-      }
-      this.sortPokemon({ filter: this.filtered, ascending: this.ascending });
+      this.sortPokemon({ filter: e.target.textContent, ascending: e.target.textContent == this.sort.filter ? !this.sort.ascending : this.sort.ascending });
     }
   },
   created() {
@@ -94,6 +93,7 @@ export default {
 nav {
   background: rgba(255, 0, 0, 1);
   color: white;
+  padding-bottom: 10px;
 }
 .container {
   display: grid;
@@ -107,9 +107,10 @@ nav {
 }
 ul li {
   display: inline;
-  padding: 2px 10px 2px 10px;
+  padding: 2px 10px 0px 10px;
   border: solid 1px black;
-  margin: 0 10px 0px 10px;
+  margin: 0 10px 10px 10px;
+  cursor: pointer;
 }
 
 .active {
@@ -136,5 +137,9 @@ ul li {
 }
 .title {
   color: white;
+}
+
+.card {
+  cursor: pointer;
 }
 </style>

@@ -13,9 +13,6 @@
   </div>
 </section>
     <transition name="fade">
-      <app-loading v-if="isLoading"></app-loading>
-    </transition>
-    <transition name="fade">
       <router-view />
     </transition>
   </div>
@@ -25,14 +22,12 @@
 </style>
 
 <script>
-import appLoading from "./components/Loading.vue";
 import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["isLoading"])
   },
   components: {
-    appLoading
   }
 };
 </script>

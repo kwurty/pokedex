@@ -1,4 +1,6 @@
 # pokedex
+A vue created instance of a pokedex, using the https://pokeapi.co API.
+Created to further experiment with Axios calls, VueX, and components
 
 ## Project setup
 ```
