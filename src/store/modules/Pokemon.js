@@ -96,7 +96,6 @@ export default {
             Axios.get('https://pokeapi.co/api/v2/pokemon/' + payload)
                 .then(response => {
                     
-                    console.log(response)
                     context.commit('setActivePokemon', {activePokemon: response.data, isActive: true})
                 })
                 .then(() => {
@@ -111,7 +110,6 @@ export default {
         },
 
         setActive(context, payload) {
-            console.log(payload);
             context.commit('setActivePokemon', payload);
         }
     }

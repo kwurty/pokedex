@@ -68,8 +68,6 @@ export default {
   },
   methods: {
     setActivePokemon() {
-      // this.setLoading(false)
-      console.log("HELLO");
       let obj = {
         isActive: false,
         activePokemon: {}

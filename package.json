@@ -2,10 +2,12 @@
   "name": "pokedex",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/kwurty/pokedex",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "node ./node_modules/vue-gh-pages/index.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -25,6 +27,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
+    "vue-gh-pages": "^1.19.1",
     "vue-template-compiler": "^2.6.11"
   }
 }
